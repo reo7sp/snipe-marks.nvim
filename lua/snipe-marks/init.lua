@@ -1,5 +1,5 @@
 local Menu = require("snipe.menu")
-
+local hl = require("snipe.highlights")
 local M = {}
 
 local get_marks = function(type)
@@ -86,6 +86,15 @@ local open_marks_menu = function(type)
 			local new_win = vim.api.nvim_get_current_win()
 			vim.api.nvim_win_set_cursor(new_win, { item.lnum, item.col - 1 })
 		end, { nowait = true, buffer = m.buf })
+
+		-- Highlighting logic for mark items
+		for i, mark_item in ipairs(m.items) do
+			local ns_id = hl.highlight_ns
+			vim.api.nvim_buf_add_highlight(m.buf, ns_id, "WarningMsg", i - 1, 0, 1) -- Highlight mark
+			vim.api.nvim_buf_add_highlight(m.buf, ns_id, "MoreMsg", i - 1, 2, 8) -- Highlight lnum
+			vim.api.nvim_buf_add_highlight(m.buf, ns_id, "Search", i - 1, 9, 13) -- Highlight col - 1
+			vim.api.nvim_buf_add_highlight(m.buf, ns_id, "Normal", i - 1, 14, -1) -- Highlight name
+		end
 	end)
 
 	menu:open(marks, function(m, i)
