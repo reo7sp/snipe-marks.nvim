@@ -65,7 +65,6 @@ end
 local open_marks_menu = function(type)
 	local marks = get_marks(type)
 	local menu = Menu:new({
-		position = "cursor",
 		open_win_override = { title = type == "all" and "All Marks" or "Local Marks" },
 	})
 
